@@ -1,0 +1,8 @@
+##Import AD Module 
+import-module activedirectory
+Searchbase = "dc=dc,dc=example,dc=com"
+## Search and Hide disabled users without msExchHideFromAddressLists
+Get-ADUser -Filter {(mail -like "*") -and(enabled -eq $false) -and(msExchHideFromAddressLists -notlike "*")} -SearchBase $searchbase | Set-ADUser -Add @{msExchHideFromAddressLists="TRUE"}
+
+##Search and Hide that have the msExchHideFromAddressLists property set to false
+Get-ADUser -Filter {(mail -like "*") -and(enabled -eq $false) -and(msExchHideFromAddressLists -notlike "*")} -SearchBase $searchbase | fl distinguishedname 
